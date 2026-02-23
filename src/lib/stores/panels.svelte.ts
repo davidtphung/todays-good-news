@@ -29,11 +29,11 @@ const state = $state<{ layouts: PanelLayout[] }>({
 
 export const panels = {
 	get layouts() {
-		return state.layouts.sort((a, b) => a.order - b.order);
+		return [...state.layouts].sort((a, b) => a.order - b.order);
 	},
 
 	get visible() {
-		return this.layouts.filter((l) => l.visible);
+		return [...state.layouts].sort((a, b) => a.order - b.order).filter((l) => l.visible);
 	},
 
 	init() {

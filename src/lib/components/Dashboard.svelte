@@ -22,34 +22,49 @@
 
 	let { initialStories, digest, geoStories, history }: Props = $props();
 
-	// Initialize stores after mount to avoid hydration mismatch
+	let mounted = $state(false);
+
 	onMount(() => {
 		stories.setStories(initialStories);
 		panels.init();
+		mounted = true;
 	});
 
 	const allStories = $derived(Object.values(initialStories).flat());
 
-	// Panels excluding digest and history (rendered in the top-right section)
-	const gridPanels = $derived(
-		panels.visible.filter((l) => l.id !== 'digest' && l.id !== 'history')
+	// Use the static config for SSR, switch to reactive store after mount
+	const visiblePanels = $derived(
+		mounted
+			? panels.visible
+			: PANELS.filter((p) => p.visible).map((p) => ({
+					id: p.id,
+					visible: p.visible,
+					order: p.order,
+					width: p.defaultWidth as 1 | 2 | 4
+				}))
 	);
 
-	const showDigest = $derived(panels.visible.some((l) => l.id === 'digest'));
-	const showHistory = $derived(panels.visible.some((l) => l.id === 'history'));
+	const gridPanels = $derived(
+		visiblePanels.filter((l) => l.id !== 'digest' && l.id !== 'history')
+	);
+
+	const showDigest = $derived(visiblePanels.some((l) => l.id === 'digest'));
+	const showHistory = $derived(visiblePanels.some((l) => l.id === 'history'));
+
+	const digestConfig = PANELS.find((p) => p.id === 'digest')!;
+	const historyConfig = PANELS.find((p) => p.id === 'history')!;
 </script>
 
 <!-- ESPN-style ticker at the top -->
 <Ticker stories={allStories} />
 
-<!-- Top-right digest + history section -->
+<!-- Digest + History section -->
 {#if showDigest || showHistory}
 	<div class="border-b border-white/10 bg-surface-raised/50">
 		<div class="mx-auto grid max-w-[1800px] grid-cols-1 gap-1 p-2 md:grid-cols-2 md:p-4">
 			{#if showDigest}
-				{@const digestConfig = PANELS.find((p) => p.id === 'digest')}
-				{@const digestLayout = panels.visible.find((l) => l.id === 'digest')}
-				{#if digestConfig && digestLayout}
+				{@const digestLayout = visiblePanels.find((l) => l.id === 'digest')}
+				{#if digestLayout}
 					<Panel config={digestConfig} layout={{ ...digestLayout, width: 2 }} storyCount={0}>
 						<DailyDigest
 							{digest}
@@ -62,9 +77,8 @@
 				{/if}
 			{/if}
 			{#if showHistory}
-				{@const historyConfig = PANELS.find((p) => p.id === 'history')}
-				{@const historyLayout = panels.visible.find((l) => l.id === 'history')}
-				{#if historyConfig && historyLayout}
+				{@const historyLayout = visiblePanels.find((l) => l.id === 'history')}
+				{#if historyLayout}
 					<Panel config={historyConfig} layout={{ ...historyLayout, width: 2 }} storyCount={0}>
 						<TodayInHistory events={history.events} dateLabel={history.dateLabel} />
 					</Panel>
