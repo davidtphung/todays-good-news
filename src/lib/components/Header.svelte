@@ -60,9 +60,10 @@
 
 			<a
 				href="/about"
-				class="text-sm text-white/50 transition-all duration-150 hover:text-white/80 hidden md:inline"
+				class="text-sm text-white/50 transition-all duration-150 hover:text-white/80"
 			>
-				About
+				<span class="hidden md:inline">About & Mission</span>
+				<span class="md:hidden">About</span>
 			</a>
 
 			<button
