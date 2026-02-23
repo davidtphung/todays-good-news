@@ -88,7 +88,7 @@
 
 	<!-- Legend -->
 	{#if geoStories.length > 0}
-		<div class="absolute bottom-spacing-8 left-spacing-12 flex items-center gap-spacing-4">
+		<div class="absolute bottom-2 left-3 flex items-center gap-1">
 			<div class="h-1.5 w-1.5 rounded-full bg-positive"></div>
 			<span class="text-[10px] text-white/30">{geoStories.length} stories mapped</span>
 		</div>

@@ -24,9 +24,9 @@
 		aria-label="Settings"
 		tabindex="-1"
 	>
-		<div class="mx-spacing-16 w-full max-w-lg rounded-sm border border-white/10 bg-surface-raised">
+		<div class="mx-4 w-full max-w-lg rounded-sm border border-white/10 bg-surface-raised">
 			<!-- Header -->
-			<div class="flex items-center justify-between border-b border-white/10 px-spacing-24 py-spacing-16">
+			<div class="flex items-center justify-between border-b border-white/10 px-6 py-4">
 				<h2 class="text-md font-normal text-gray-50">Settings</h2>
 				<button
 					onclick={() => preferences.closeSettings()}
@@ -37,12 +37,12 @@
 				</button>
 			</div>
 
-			<div class="max-h-[70vh] overflow-y-auto px-spacing-24 py-spacing-16">
+			<div class="max-h-[70vh] overflow-y-auto px-6 py-4">
 				<!-- Preferences -->
-				<div class="space-y-spacing-12">
+				<div class="space-y-3">
 					<h3 class="text-xs uppercase tracking-wider text-white/30">Preferences</h3>
 
-					<label class="flex items-center justify-between py-spacing-4">
+					<label class="flex items-center justify-between py-1">
 						<span class="text-sm text-white/60">Show toast notifications</span>
 						<input
 							type="checkbox"
@@ -53,7 +53,7 @@
 						/>
 					</label>
 
-					<label class="flex items-center justify-between py-spacing-4">
+					<label class="flex items-center justify-between py-1">
 						<span class="text-sm text-white/60">Auto-refresh stories</span>
 						<input
 							type="checkbox"
@@ -66,7 +66,7 @@
 				</div>
 
 				<!-- Panel visibility -->
-				<div class="mt-spacing-24 space-y-spacing-8">
+				<div class="mt-6 space-y-2">
 					<div class="flex items-center justify-between">
 						<h3 class="text-xs uppercase tracking-wider text-white/30">Panels</h3>
 						<button
@@ -80,9 +80,9 @@
 					{#each PANELS as panelConfig}
 						{@const layout = panels.layouts.find((l) => l.id === panelConfig.id)}
 						<label
-							class="flex items-center justify-between -mx-spacing-8 rounded-sm px-spacing-8 py-spacing-8 transition-all duration-150 hover:bg-white/5"
+							class="flex items-center justify-between -mx-2 rounded-sm px-2 py-2 transition-all duration-150 hover:bg-white/5"
 						>
-							<div class="flex items-center gap-spacing-8">
+							<div class="flex items-center gap-2">
 								<span class="text-sm">{panelConfig.icon}</span>
 								<span class="text-sm text-white/60">{panelConfig.title}</span>
 							</div>

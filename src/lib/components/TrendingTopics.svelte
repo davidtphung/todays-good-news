@@ -52,11 +52,11 @@
 	);
 </script>
 
-<div class="space-y-spacing-16">
+<div class="space-y-4">
 	<!-- Topic cloud -->
 	<div>
-		<h3 class="mb-spacing-8 text-xs uppercase tracking-wider text-white/30">Trending Words</h3>
-		<div class="flex flex-wrap gap-spacing-4">
+		<h3 class="mb-2 text-xs uppercase tracking-wider text-white/30">Trending Words</h3>
+		<div class="flex flex-wrap gap-1">
 			{#each topics() as topic}
 				{@const opacity = 0.2 + (topic.count / maxCount) * 0.8}
 				<span
@@ -75,11 +75,11 @@
 
 	<!-- Category bars -->
 	<div>
-		<h3 class="mb-spacing-8 text-xs uppercase tracking-wider text-white/30">By Category</h3>
-		<div class="space-y-spacing-4">
+		<h3 class="mb-2 text-xs uppercase tracking-wider text-white/30">By Category</h3>
+		<div class="space-y-1">
 			{#each categoryDist() as { category, count }}
 				{@const maxCat = categoryDist()[0]?.count ?? 1}
-				<div class="flex items-center gap-spacing-8">
+				<div class="flex items-center gap-2">
 					<span class="w-20 text-xs text-white/40 truncate capitalize">{category}</span>
 					<div class="flex-1 h-1 overflow-hidden rounded-full bg-white/5">
 						<div

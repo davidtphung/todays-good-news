@@ -13,18 +13,18 @@
 </svelte:head>
 
 {#if story}
-	<article class="mx-auto max-w-2xl px-spacing-16 py-spacing-32 md:px-spacing-24">
+	<article class="mx-auto max-w-2xl px-4 py-8 md:px-6">
 		<!-- Back link -->
 		<a
 			href="/"
-			class="mb-spacing-24 inline-flex items-center gap-spacing-4 text-sm text-white/40 transition-opacity duration-150 hover:text-white/60"
+			class="mb-6 inline-flex items-center gap-1 text-sm text-white/40 transition-opacity duration-150 hover:text-white/60"
 		>
 			← Dashboard
 		</a>
 
 		<!-- Header -->
-		<header class="mb-spacing-24">
-			<div class="mb-spacing-12 flex items-center gap-spacing-8">
+		<header class="mb-6">
+			<div class="mb-3 flex items-center gap-2">
 				<CategoryBadge category={story.category} />
 				<SentimentGauge score={story.positivity_score} size="md" />
 			</div>
@@ -33,7 +33,7 @@
 				{story.title}
 			</h1>
 
-			<div class="mt-spacing-12 flex items-center gap-spacing-8 text-xs text-white/30">
+			<div class="mt-3 flex items-center gap-2 text-xs text-white/30">
 				<a
 					href={story.source_url}
 					target="_blank"
@@ -52,7 +52,7 @@
 		</header>
 
 		<!-- Divider -->
-		<div class="mb-spacing-24 h-px w-full bg-white/10"></div>
+		<div class="mb-6 h-px w-full bg-white/10"></div>
 
 		<!-- Summary -->
 		<div class="prose prose-invert max-w-none">
@@ -62,7 +62,7 @@
 		</div>
 
 		<!-- Source link -->
-		<div class="mt-spacing-32 border-t border-white/10 pt-spacing-16">
+		<div class="mt-8 border-t border-white/10 pt-4">
 			<a
 				href={story.source_url}
 				target="_blank"
@@ -74,9 +74,9 @@
 		</div>
 
 		<!-- Meta -->
-		<div class="mt-spacing-24 rounded-sm border border-white/5 bg-white/[0.02] p-spacing-16">
-			<h3 class="mb-spacing-8 text-xs uppercase tracking-wider text-white/20">Story Details</h3>
-			<div class="grid grid-cols-2 gap-spacing-8 text-xs">
+		<div class="mt-6 rounded-sm border border-white/5 bg-white/[0.02] p-4">
+			<h3 class="mb-2 text-xs uppercase tracking-wider text-white/20">Story Details</h3>
+			<div class="grid grid-cols-2 gap-2 text-xs">
 				<div>
 					<span class="text-white/30">Published</span>
 					<p class="text-white/50">{formatDate(story.published_at)}</p>
@@ -104,7 +104,7 @@
 			<p class="text-lg text-white/30">Story not found</p>
 			<a
 				href="/"
-				class="mt-spacing-8 inline-block text-sm text-white/40 transition-opacity duration-150 hover:text-white/60"
+				class="mt-2 inline-block text-sm text-white/40 transition-opacity duration-150 hover:text-white/60"
 			>
 				← Back to dashboard
 			</a>

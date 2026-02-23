@@ -13,16 +13,16 @@
 </script>
 
 <div
-	class="group relative transition-all duration-150 hover:bg-white/5 -mx-spacing-16 px-spacing-16 py-spacing-12"
+	class="group relative transition-all duration-150 hover:bg-white/5 -mx-4 px-4 py-3"
 	data-story-id={story.id}
 >
 	<!-- Full-card link (sits behind content, provides the click target) -->
 	<a href="/story/{story.id}" class="absolute inset-0 z-0" aria-label={story.title}></a>
 
-	<div class="relative z-10 flex gap-spacing-12">
+	<div class="relative z-10 flex gap-3">
 		<!-- Content -->
 		<div class="min-w-0 flex-1">
-			<div class="flex items-start gap-spacing-8">
+			<div class="flex items-start gap-2">
 				<div class="flex-1 min-w-0">
 					<h3
 						class="text-sm font-normal leading-[20px] text-gray-50 transition-opacity duration-150 group-hover:opacity-80"
@@ -30,7 +30,7 @@
 						{story.title}
 					</h3>
 					{#if !compact}
-						<p class="mt-spacing-4 text-sm leading-[20px] text-white/50 line-clamp-2">
+						<p class="mt-1 text-sm leading-[20px] text-white/50 line-clamp-2">
 							{story.summary}
 						</p>
 					{/if}
@@ -38,7 +38,7 @@
 			</div>
 
 			<!-- Meta row -->
-			<div class="mt-spacing-8 flex items-center gap-spacing-8">
+			<div class="mt-2 flex items-center gap-2">
 				<a
 					href={story.source_url}
 					target="_blank"
@@ -53,7 +53,7 @@
 					<span class="text-xs text-white/20">·</span>
 					<span class="text-xs text-white/30">{story.location_name}</span>
 				{/if}
-				<div class="ml-auto flex items-center gap-spacing-8">
+				<div class="ml-auto flex items-center gap-2">
 					<SentimentGauge score={story.positivity_score} size="sm" />
 					<CategoryBadge category={story.category} />
 				</div>

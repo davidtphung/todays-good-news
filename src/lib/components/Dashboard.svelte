@@ -44,7 +44,7 @@
 <!-- Top-right digest + history section -->
 {#if showDigest || showHistory}
 	<div class="border-b border-white/10 bg-surface-raised/50">
-		<div class="mx-auto grid max-w-[1800px] grid-cols-1 gap-spacing-4 p-spacing-8 md:grid-cols-2 md:p-spacing-16">
+		<div class="mx-auto grid max-w-[1800px] grid-cols-1 gap-1 p-2 md:grid-cols-2 md:p-4">
 			{#if showDigest}
 				{@const digestConfig = PANELS.find((p) => p.id === 'digest')}
 				{@const digestLayout = panels.visible.find((l) => l.id === 'digest')}
@@ -74,7 +74,7 @@
 {/if}
 
 <!-- Main panel grid -->
-<div class="grid grid-cols-1 gap-spacing-4 p-spacing-8 md:grid-cols-2 lg:grid-cols-4 md:p-spacing-16">
+<div class="grid grid-cols-1 gap-1 p-2 md:grid-cols-2 lg:grid-cols-4 md:p-4">
 	{#each gridPanels as layout (layout.id)}
 		{@const config = PANELS.find((p) => p.id === layout.id)}
 		{#if config}
@@ -88,7 +88,7 @@
 							{/each}
 						</div>
 					{:else}
-						<div class="flex items-center justify-center py-spacing-32">
+						<div class="flex items-center justify-center py-8">
 							<span class="text-xs text-white/20">No stories yet</span>
 						</div>
 					{/if}

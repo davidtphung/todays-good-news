@@ -13,10 +13,10 @@
 </script>
 
 <header class="border-b border-white/10">
-	<div class="flex items-center justify-between px-spacing-16 py-spacing-12 md:px-spacing-24">
+	<div class="flex items-center justify-between px-4 py-3 md:px-6">
 		<!-- Left: Brand -->
-		<div class="flex items-center gap-spacing-16">
-			<a href="/" class="group flex items-center gap-spacing-8">
+		<div class="flex items-center gap-4">
+			<a href="/" class="group flex items-center gap-2">
 				<span
 					class="text-md font-normal tracking-tight text-gray-50 transition-opacity duration-150 group-hover:opacity-80"
 				>
@@ -28,9 +28,9 @@
 		</div>
 
 		<!-- Right: Status + Settings -->
-		<div class="flex items-center gap-spacing-16">
+		<div class="flex items-center gap-4">
 			{#if realtime.connected}
-				<div class="flex items-center gap-spacing-4">
+				<div class="flex items-center gap-1">
 					<div class="h-1.5 w-1.5 rounded-full bg-positive"></div>
 					<span class="text-xs text-white/50">Live</span>
 				</div>

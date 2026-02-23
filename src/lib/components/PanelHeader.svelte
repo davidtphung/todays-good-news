@@ -9,8 +9,8 @@
 	let { config, storyCount = 0 }: Props = $props();
 </script>
 
-<div class="flex items-center justify-between px-spacing-16 py-spacing-12">
-	<div class="flex items-center gap-spacing-8">
+<div class="flex items-center justify-between px-4 py-3">
+	<div class="flex items-center gap-2">
 		<span class="text-sm">{config.icon}</span>
 		<h2 class="text-sm font-normal text-gray-50">{config.title}</h2>
 	</div>

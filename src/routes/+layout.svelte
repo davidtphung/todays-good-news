@@ -28,7 +28,7 @@
 	</main>
 
 	<!-- Footer -->
-	<footer class="border-t border-white/5 px-spacing-16 py-spacing-12 md:px-spacing-24">
+	<footer class="border-t border-white/5 px-4 py-3 md:px-6">
 		<div class="flex items-center justify-between">
 			<span class="text-xs uppercase tracking-wider text-white/20">
 				Good News Dashboard
