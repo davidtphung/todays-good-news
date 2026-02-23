@@ -18,7 +18,7 @@
 		<div class="flex items-center gap-4">
 			<a href="/" class="group flex items-center gap-2">
 				<span
-					class="text-md font-normal tracking-tight text-gray-50 transition-opacity duration-150 group-hover:opacity-80"
+					class="text-base font-normal tracking-tight text-gray-50 transition-opacity duration-150 group-hover:opacity-80"
 				>
 					Good News
 				</span>

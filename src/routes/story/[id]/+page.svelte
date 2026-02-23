@@ -56,7 +56,7 @@
 
 		<!-- Summary -->
 		<div class="prose prose-invert max-w-none">
-			<p class="text-md leading-relaxed text-white/70">
+			<p class="text-base leading-relaxed text-white/70">
 				{story.summary}
 			</p>
 		</div>

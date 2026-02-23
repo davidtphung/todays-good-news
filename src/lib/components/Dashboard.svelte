@@ -4,6 +4,7 @@
 	import { PANELS } from '$lib/config.js';
 	import { panels } from '$lib/stores/panels.svelte.js';
 	import { stories } from '$lib/stores/stories.svelte.js';
+	import { onMount } from 'svelte';
 	import Panel from './Panel.svelte';
 	import StoryCard from './StoryCard.svelte';
 	import GlobeMap from './GlobeMap.svelte';
@@ -21,8 +22,8 @@
 
 	let { initialStories, digest, geoStories, history }: Props = $props();
 
-	// Initialize stores
-	$effect(() => {
+	// Initialize stores after mount to avoid hydration mismatch
+	onMount(() => {
 		stories.setStories(initialStories);
 		panels.init();
 	});

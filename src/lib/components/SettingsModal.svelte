@@ -27,7 +27,7 @@
 		<div class="mx-4 w-full max-w-lg rounded-sm border border-white/10 bg-surface-raised">
 			<!-- Header -->
 			<div class="flex items-center justify-between border-b border-white/10 px-6 py-4">
-				<h2 class="text-md font-normal text-gray-50">Settings</h2>
+				<h2 class="text-base font-normal text-gray-50">Settings</h2>
 				<button
 					onclick={() => preferences.closeSettings()}
 					class="text-sm text-white/40 transition-opacity duration-150 hover:text-white/70"

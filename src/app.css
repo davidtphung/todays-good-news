@@ -12,27 +12,11 @@
 	--color-surface-raised: #111111;
 	--color-surface-overlay: #1a1a1a;
 
-	/* Alpha whites for hierarchy (ndstudio pattern) */
-	--color-alpha-white-5: rgba(255, 255, 255, 0.05);
-	--color-alpha-white-10: rgba(255, 255, 255, 0.1);
-	--color-alpha-white-20: rgba(255, 255, 255, 0.2);
-	--color-alpha-white-50: rgba(255, 255, 255, 0.5);
-
 	/* Positivity spectrum */
 	--color-positive: #10b981;
 	--color-positive-bright: #34d399;
 	--color-positive-gold: #f59e0b;
 	--color-positive-warm: #fbbf24;
-
-	/* Type scale */
-	--font-size-xs: 0.75rem;
-	--font-size-sm: 0.8125rem;
-	--font-size-base: 0.875rem;
-	--font-size-md: 1rem;
-	--font-size-lg: 1.125rem;
-	--font-size-xl: 1.5rem;
-	--font-size-2xl: 2rem;
-	--font-size-display: 3rem;
 }
 
 /* Base typography — system font stack like ndstudio */
