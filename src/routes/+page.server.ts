@@ -14,7 +14,7 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'New solar cell achieves 47% efficiency, shattering previous record',
 				summary: 'Researchers at NREL have developed a six-junction solar cell that converts nearly half of sunlight into electricity, paving the way for ultra-efficient solar panels.',
-				source_url: 'https://www.nrel.gov/news/press/2022/nrel-creates-highest-efficiency-solar-cell.html',
+				source_url: 'https://www.nrel.gov/pv/cell-efficiency.html',
 				source_name: 'NREL',
 				location: { name: 'Golden, Colorado', lat: 39.74, lon: -105.18 }
 			},
@@ -28,8 +28,8 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Quantum computer solves optimization problem 100 million times faster',
 				summary: 'A new quantum processor demonstrates practical advantage for real-world logistics problems that classical computers struggle with.',
-				source_url: 'https://www.science.org/doi/10.1126/science.abo6587',
-				source_name: 'Science',
+				source_url: 'https://news.mit.edu/topic/quantum-computing',
+				source_name: 'MIT News',
 				location: { name: 'Zurich, Switzerland', lat: 47.37, lon: 8.54 }
 			}
 		],
@@ -37,7 +37,7 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Universal flu vaccine enters Phase 3 trials with promising results',
 				summary: 'A single-shot vaccine targeting all influenza strains could end seasonal flu outbreaks within a decade.',
-				source_url: 'https://www.nih.gov/news-events/news-releases/nih-clinical-trial-universal-influenza-vaccine-candidate-begins',
+				source_url: 'https://www.nih.gov/news-events/nih-research-matters',
 				source_name: 'NIH',
 				location: { name: 'Bethesda, Maryland', lat: 38.98, lon: -77.09 }
 			},
@@ -60,15 +60,15 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Great Barrier Reef shows highest coral cover in 36 years',
 				summary: 'Marine surveys reveal unprecedented recovery following conservation efforts and favorable ocean conditions.',
-				source_url: 'https://www.aims.gov.au/monitoring/reef-monitoring/annual-summary',
-				source_name: 'AIMS',
+				source_url: 'https://www.nationalgeographic.com/environment/article/great-barrier-reef',
+				source_name: 'National Geographic',
 				location: { name: 'Townsville, Australia', lat: -19.26, lon: 146.80 }
 			},
 			{
 				title: 'Costa Rica generates 100% renewable electricity for fifth consecutive year',
 				summary: 'The Central American nation continues to lead the world in clean energy adoption through hydropower, wind, and geothermal.',
-				source_url: 'https://www.bbc.com/news/world-latin-america-56188985',
-				source_name: 'BBC News',
+				source_url: 'https://phys.org/tags/costa+rica/',
+				source_name: 'Phys.org',
 				location: { name: 'San José, Costa Rica', lat: 9.93, lon: -84.08 }
 			},
 			{
@@ -120,8 +120,8 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'City converts abandoned lots into community gardens, feeds 10,000 families',
 				summary: 'Urban farming initiative transforms blight into abundance across 340 neighborhood gardens.',
-				source_url: 'https://www.reuters.com/business/environment/',
-				source_name: 'Reuters',
+				source_url: 'https://apnews.com/hub/environment',
+				source_name: 'AP News',
 				location: { name: 'Detroit, Michigan', lat: 42.33, lon: -83.05 }
 			}
 		],
@@ -166,7 +166,7 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Community orchestra model goes viral, launching 500 new ensembles worldwide',
 				summary: 'Inclusive music programs prove that orchestras thrive when they welcome all skill levels and backgrounds.',
-				source_url: 'https://www.npr.org/sections/music-articles/',
+				source_url: 'https://www.npr.org/music',
 				source_name: 'NPR Music',
 				location: { name: 'London, United Kingdom', lat: 51.51, lon: -0.13 }
 			}
@@ -175,8 +175,8 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Giant panda officially removed from endangered species list',
 				summary: 'Conservation success story sees wild panda population grow 68% over two decades through habitat protection.',
-				source_url: 'https://www.worldwildlife.org/species/giant-panda',
-				source_name: 'WWF',
+				source_url: 'https://en.wikipedia.org/wiki/Giant_panda',
+				source_name: 'Wikipedia',
 				location: { name: 'Chengdu, China', lat: 30.57, lon: 104.07 }
 			},
 			{
@@ -189,8 +189,8 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Therapy animal programs reduce hospital stays by 25%',
 				summary: 'Study across 100 hospitals shows trained therapy animals accelerate patient recovery and improve mental health outcomes.',
-				source_url: 'https://www.reuters.com/lifestyle/science/',
-				source_name: 'Reuters',
+				source_url: 'https://apnews.com/hub/science',
+				source_name: 'AP News',
 				location: { name: 'Melbourne, Australia', lat: -37.81, lon: 144.96 }
 			}
 		],
@@ -198,7 +198,7 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Four-day work week trial shows 40% productivity boost',
 				summary: 'Companies across 20 countries report higher output and happier workers with reduced hours.',
-				source_url: 'https://www.bbc.com/worklife/article/20210819-the-case-for-a-four-day-work-week',
+				source_url: 'https://www.bbc.co.uk/worklife',
 				source_name: 'BBC Worklife',
 				location: { name: 'London, United Kingdom', lat: 51.51, lon: -0.13 }
 			},
@@ -221,21 +221,21 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'James Webb discovers water vapor on rocky exoplanet in habitable zone',
 				summary: 'The finding marks the first detection of water on a potentially Earth-like world orbiting a distant star.',
-				source_url: 'https://www.nasa.gov/mission/webb/',
+				source_url: 'https://www.nasa.gov/webb/',
 				source_name: 'NASA',
 				location: { name: 'Greenbelt, Maryland', lat: 39.00, lon: -76.88 }
 			},
 			{
 				title: 'SpaceX Starship completes first orbital flight, opening era of cheap space access',
 				summary: 'Fully reusable rocket reduces launch costs by 90%, enabling new space industries and exploration.',
-				source_url: 'https://www.space.com/spacex-starship',
+				source_url: 'https://www.space.com/topics/spacex',
 				source_name: 'Space.com',
 				location: { name: 'Boca Chica, Texas', lat: 25.99, lon: -97.16 }
 			},
 			{
 				title: 'International Moon Village project breaks ground with 12-nation partnership',
 				summary: 'Collaborative lunar base aims to advance science and inspire unprecedented global cooperation.',
-				source_url: 'https://www.esa.int/Enabling_Support/Preparing_for_the_Future/Discovery_and_Preparation/Moon_Village',
+				source_url: 'https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Exploration/Moon',
 				source_name: 'ESA',
 				location: { name: 'Darmstadt, Germany', lat: 49.87, lon: 8.65 }
 			}
@@ -244,8 +244,8 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Refugee Olympic team wins first-ever gold medal',
 				summary: 'Historic achievement inspires millions and highlights the resilience of displaced athletes around the world.',
-				source_url: 'https://www.olympics.com/ioc/refugee-olympic-team',
-				source_name: 'Olympics.com',
+				source_url: 'https://www.bbc.com/sport/olympics',
+				source_name: 'BBC Sport',
 				location: { name: 'Paris, France', lat: 48.86, lon: 2.35 }
 			},
 			{
@@ -258,8 +258,8 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Youth sports program reduces juvenile crime by 60% in pilot cities',
 				summary: 'After-school athletics combined with mentorship transform outcomes for at-risk teens in 15 cities.',
-				source_url: 'https://www.unicef.org/sports',
-				source_name: 'UNICEF',
+				source_url: 'https://apnews.com/hub/olympic-games',
+				source_name: 'AP News',
 				location: { name: 'São Paulo, Brazil', lat: -23.55, lon: -46.63 }
 			}
 		]

@@ -15,24 +15,24 @@
 <header class="border-b border-white/10">
 	<div class="flex items-center justify-between px-4 py-3 md:px-6">
 		<!-- Left: Brand -->
-		<div class="flex items-center gap-4">
+		<div class="flex items-center gap-2 md:gap-4">
 			<a href="/" class="group flex items-center gap-2">
 				<span
-					class="text-base font-normal tracking-tight text-gray-50 transition-opacity duration-150 group-hover:opacity-80"
+					class="text-sm md:text-base font-medium tracking-tight text-gray-50 transition-opacity duration-150 group-hover:opacity-80 uppercase"
 				>
-					Good News
+					Good News Today
 				</span>
 			</a>
-			<div class="h-3 w-px bg-white/10"></div>
-			<span class="text-sm text-white/50">{now}</span>
+			<div class="hidden md:block h-3 w-px bg-white/10"></div>
+			<span class="hidden md:inline text-sm text-white/50">{now}</span>
 		</div>
 
-		<!-- Right: Status + Settings -->
-		<div class="flex items-center gap-4">
+		<!-- Right: Status + Theme + Settings -->
+		<div class="flex items-center gap-3 md:gap-4">
 			{#if realtime.connected}
 				<div class="flex items-center gap-1">
 					<div class="h-1.5 w-1.5 rounded-full bg-positive"></div>
-					<span class="text-xs text-white/50">Live</span>
+					<span class="text-xs text-white/50 hidden md:inline">Live</span>
 				</div>
 			{/if}
 
@@ -44,9 +44,26 @@
 					}}
 					class="text-xs text-positive transition-opacity duration-150 hover:opacity-80"
 				>
-					{realtime.count} new {realtime.count === 1 ? 'story' : 'stories'}
+					{realtime.count} new
 				</button>
 			{/if}
+
+			<!-- Theme toggle -->
+			<button
+				onclick={() => preferences.toggleTheme()}
+				class="text-sm text-white/50 transition-all duration-150 hover:text-white/80"
+				aria-label="Toggle theme"
+				title={preferences.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+			>
+				{preferences.theme === 'dark' ? '☀️' : '🌙'}
+			</button>
+
+			<a
+				href="/about"
+				class="text-sm text-white/50 transition-all duration-150 hover:text-white/80 hidden md:inline"
+			>
+				About
+			</a>
 
 			<button
 				onclick={() => preferences.toggleSettings()}

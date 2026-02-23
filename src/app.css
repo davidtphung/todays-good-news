@@ -1,22 +1,130 @@
 @import 'tailwindcss';
 
 /*
- * Good News Dashboard — Design System
+ * Good News Today — Design System
  * Inspired by ndstudio.gov: minimal, monochromatic, opacity-based hierarchy.
- * Near-black background, restrained interactions, generous spacing.
+ * Supports dark and light themes via CSS custom properties.
  */
 
 @theme {
-	/* Core palette */
-	--color-surface: #0a0a0a;
-	--color-surface-raised: #111111;
-	--color-surface-overlay: #1a1a1a;
+	/* Core palette — uses CSS variables for theme switching */
+	--color-surface: var(--theme-surface);
+	--color-surface-raised: var(--theme-surface-raised);
+	--color-surface-overlay: var(--theme-surface-overlay);
 
 	/* Positivity spectrum */
 	--color-positive: #10b981;
 	--color-positive-bright: #34d399;
 	--color-positive-gold: #f59e0b;
 	--color-positive-warm: #fbbf24;
+}
+
+/* Dark theme (default) */
+:root,
+html.dark {
+	--theme-surface: #0a0a0a;
+	--theme-surface-raised: #111111;
+	--theme-surface-overlay: #1a1a1a;
+	color-scheme: dark;
+}
+
+/* Light theme */
+html.light {
+	--theme-surface: #fafafa;
+	--theme-surface-raised: #ffffff;
+	--theme-surface-overlay: #f0f0f0;
+	color-scheme: light;
+}
+
+/* Light mode — text color overrides */
+html.light .text-gray-50 {
+	color: #111111 !important;
+}
+html.light .text-white\/50,
+html.light .text-white\/60 {
+	color: rgba(0, 0, 0, 0.55) !important;
+}
+html.light .text-white\/30,
+html.light .text-white\/40 {
+	color: rgba(0, 0, 0, 0.35) !important;
+}
+html.light .text-white\/20 {
+	color: rgba(0, 0, 0, 0.2) !important;
+}
+html.light .text-white\/10 {
+	color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light mode — border overrides */
+html.light .border-white\/10 {
+	border-color: rgba(0, 0, 0, 0.1) !important;
+}
+html.light .border-white\/5 {
+	border-color: rgba(0, 0, 0, 0.06) !important;
+}
+html.light .divide-white\/5 > * + * {
+	border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Light mode — background overrides */
+html.light .bg-white\/5,
+html.light .hover\:bg-white\/5:hover {
+	background-color: rgba(0, 0, 0, 0.04) !important;
+}
+html.light .bg-white\/\[0\.02\],
+html.light .bg-white\/\[0\.03\] {
+	background-color: rgba(0, 0, 0, 0.03) !important;
+}
+html.light .bg-white\/10 {
+	background-color: rgba(0, 0, 0, 0.08) !important;
+}
+html.light .bg-black\/60 {
+	background-color: rgba(0, 0, 0, 0.3) !important;
+}
+html.light .bg-surface-raised\/50 {
+	background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Light mode — hover text overrides */
+html.light .hover\:text-white\/50:hover,
+html.light .hover\:text-white\/60:hover {
+	color: rgba(0, 0, 0, 0.55) !important;
+}
+html.light .hover\:text-white\/80:hover,
+html.light .hover\:text-white\/70:hover {
+	color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Light mode — decoration overrides */
+html.light .decoration-white\/10 {
+	text-decoration-color: rgba(0, 0, 0, 0.1) !important;
+}
+html.light .hover\:decoration-white\/30:hover {
+	text-decoration-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Light mode — positive color adjustments */
+html.light .text-positive\/60 {
+	color: rgba(16, 185, 129, 0.7) !important;
+}
+html.light .bg-positive\/10 {
+	background-color: rgba(16, 185, 129, 0.08) !important;
+}
+
+/* Light mode — body */
+html.light body {
+	background-color: var(--theme-surface) !important;
+	color: #111111 !important;
+}
+
+/* Light mode — opacity hover */
+html.light .hover\:opacity-80:hover {
+	opacity: 0.7;
+}
+
+/* Light mode — checkbox accent */
+html.light .accent-positive {
+	accent-color: #059669;
 }
 
 /* Base typography — system font stack like ndstudio */
@@ -62,9 +170,48 @@ html {
 ::-webkit-scrollbar-thumb:hover {
 	background: rgba(255, 255, 255, 0.2);
 }
+html.light ::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.15);
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, 0.25);
+}
 
 /* Focus ring — subtle, accessible */
 :focus-visible {
 	outline: 1px solid rgba(255, 255, 255, 0.3);
 	outline-offset: 2px;
+}
+html.light :focus-visible {
+	outline: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 767px) {
+	body {
+		overflow-x: hidden;
+	}
+
+	/* Touch-friendly tap targets */
+	button,
+	a,
+	[role='button'] {
+		min-height: 44px;
+	}
+
+	/* Header compact links */
+	header button,
+	header a {
+		min-height: 36px;
+		min-width: auto;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	/* Edge-to-edge panels on mobile */
+	section[data-panel] {
+		border-radius: 0;
+		border-left: none;
+		border-right: none;
+	}
 }

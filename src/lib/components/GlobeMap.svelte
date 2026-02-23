@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Story } from '$lib/types/story.js';
+	import { preferences } from '$lib/stores/preferences.svelte.js';
 	import { onMount } from 'svelte';
 
 	interface Props {
@@ -65,6 +66,26 @@
 		[[-15, 130], [-12, 135], [-15, 140], [-25, 150], [-35, 148], [-38, 145], [-35, 137], [-30, 132], [-25, 115], [-20, 115], [-15, 125], [-15, 130]]
 	];
 
+	// Theme-aware colors
+	const isLight = $derived(preferences.theme === 'light');
+	const globeColors = $derived(isLight ? {
+		bgGradient0: 'rgba(0, 0, 0, 0.04)',
+		bgGradient07: 'rgba(0, 0, 0, 0.02)',
+		bgGradient1: 'rgba(0, 0, 0, 0)',
+		edge: 'rgba(0, 0, 0, 0.1)',
+		grid: 'rgba(0, 0, 0, 0.05)',
+		continentStroke: 'rgba(0, 0, 0, 0.15)',
+		continentFill: 'rgba(0, 0, 0, 0.04)',
+	} : {
+		bgGradient0: 'rgba(255, 255, 255, 0.04)',
+		bgGradient07: 'rgba(255, 255, 255, 0.02)',
+		bgGradient1: 'rgba(255, 255, 255, 0)',
+		edge: 'rgba(255, 255, 255, 0.08)',
+		grid: 'rgba(255, 255, 255, 0.03)',
+		continentStroke: 'rgba(255, 255, 255, 0.12)',
+		continentFill: 'rgba(255, 255, 255, 0.04)',
+	});
+
 	function drawGlobe(ctx: CanvasRenderingContext2D, width: number, height: number) {
 		const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
 		ctx.clearRect(0, 0, width * dpr, height * dpr);
@@ -77,9 +98,9 @@
 
 		// Globe background
 		const gradient = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, 0, cx, cy, radius);
-		gradient.addColorStop(0, 'rgba(255, 255, 255, 0.04)');
-		gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.02)');
-		gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+		gradient.addColorStop(0, globeColors.bgGradient0);
+		gradient.addColorStop(0.7, globeColors.bgGradient07);
+		gradient.addColorStop(1, globeColors.bgGradient1);
 
 		ctx.beginPath();
 		ctx.arc(cx, cy, radius, 0, Math.PI * 2);
@@ -89,12 +110,12 @@
 		// Globe edge
 		ctx.beginPath();
 		ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-		ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+		ctx.strokeStyle = globeColors.edge;
 		ctx.lineWidth = 0.5;
 		ctx.stroke();
 
 		// Grid lines (latitude)
-		ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+		ctx.strokeStyle = globeColors.grid;
 		ctx.lineWidth = 0.3;
 		for (let lat = -60; lat <= 60; lat += 30) {
 			ctx.beginPath();
@@ -136,8 +157,8 @@
 		}
 
 		// Draw continents
-		ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-		ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+		ctx.strokeStyle = globeColors.continentStroke;
+		ctx.fillStyle = globeColors.continentFill;
 		ctx.lineWidth = 0.6;
 
 		for (const continent of continents) {

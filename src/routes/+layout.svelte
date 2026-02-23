@@ -18,7 +18,7 @@
 </script>
 
 <svelte:head>
-	<title>Good News — The best things happening in the world</title>
+	<title>Good News Today — The best things happening in the world</title>
 </svelte:head>
 
 <div class="flex min-h-screen flex-col bg-surface">
@@ -31,7 +31,7 @@
 	<footer class="border-t border-white/5 px-4 py-3 md:px-6">
 		<div class="flex items-center justify-between">
 			<span class="text-xs uppercase tracking-wider text-white/20">
-				Good News Dashboard
+				Good News Today
 			</span>
 			<div class="flex items-center gap-3">
 				<span class="text-xs text-white/20">

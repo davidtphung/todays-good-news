@@ -38,8 +38,28 @@
 			</div>
 
 			<div class="max-h-[70vh] overflow-y-auto px-6 py-4">
-				<!-- Preferences -->
+				<!-- Theme -->
 				<div class="space-y-3">
+					<h3 class="text-xs uppercase tracking-wider text-white/30">Theme</h3>
+					<div class="flex gap-2">
+						{#each [
+							{ value: 'dark', label: 'Dark', icon: '🌙' },
+							{ value: 'light', label: 'Light', icon: '☀️' },
+							{ value: 'system', label: 'System', icon: '💻' }
+						] as option}
+							<button
+								onclick={() => preferences.setTheme(option.value as 'dark' | 'light' | 'system')}
+								class="flex-1 rounded-sm border px-3 py-2 text-xs transition-all duration-150 {preferences.theme === option.value ? 'border-positive/50 bg-positive/10 text-positive' : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'}"
+							>
+								<span class="mr-1">{option.icon}</span>
+								{option.label}
+							</button>
+						{/each}
+					</div>
+				</div>
+
+				<!-- Preferences -->
+				<div class="mt-6 space-y-3">
 					<h3 class="text-xs uppercase tracking-wider text-white/30">Preferences</h3>
 
 					<label class="flex items-center justify-between py-1">
