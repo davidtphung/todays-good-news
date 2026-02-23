@@ -67,8 +67,8 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'Costa Rica generates 100% renewable electricity for fifth consecutive year',
 				summary: 'The Central American nation continues to lead the world in clean energy adoption through hydropower, wind, and geothermal.',
-				source_url: 'https://phys.org/tags/costa+rica/',
-				source_name: 'Phys.org',
+				source_url: 'https://apnews.com/hub/renewable-energy',
+				source_name: 'AP News',
 				location: { name: 'San José, Costa Rica', lat: 9.93, lon: -84.08 }
 			},
 			{
@@ -228,8 +228,8 @@ function generateMockStories(): Record<string, Story[]> {
 			{
 				title: 'SpaceX Starship completes first orbital flight, opening era of cheap space access',
 				summary: 'Fully reusable rocket reduces launch costs by 90%, enabling new space industries and exploration.',
-				source_url: 'https://www.space.com/topics/spacex',
-				source_name: 'Space.com',
+				source_url: 'https://apnews.com/hub/space-exploration',
+				source_name: 'AP News',
 				location: { name: 'Boca Chica, Texas', lat: 25.99, lon: -97.16 }
 			},
 			{
