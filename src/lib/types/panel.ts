@@ -4,7 +4,7 @@ export interface PanelConfig {
 	id: PanelId;
 	title: string;
 	icon: string;
-	contentType: 'stories' | 'map' | 'trending' | 'digest' | 'history';
+	contentType: 'stories' | 'map' | 'trending' | 'digest' | 'history' | 'video' | 'quote';
 	category?: StoryCategory;
 	defaultWidth: 1 | 2 | 4;
 	visible: boolean;
@@ -16,7 +16,9 @@ export type PanelId =
 	| 'globe'
 	| 'trending'
 	| 'digest'
-	| 'history';
+	| 'history'
+	| 'video'
+	| 'quote';
 
 export interface PanelLayout {
 	id: PanelId;

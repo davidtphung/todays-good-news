@@ -10,4 +10,6 @@
 	digest={data.digest}
 	geoStories={data.geoStories}
 	history={data.history}
+	quote={data.quote}
+	video={data.video}
 />

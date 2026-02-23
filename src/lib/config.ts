@@ -15,7 +15,9 @@ export const PANELS: PanelConfig[] = [
 	{ id: 'globe', title: 'Global Good Map', icon: '🗺️', contentType: 'map', defaultWidth: 4, visible: true, order: 11 },
 	{ id: 'trending', title: 'Trending Good News', icon: '📊', contentType: 'trending', defaultWidth: 2, visible: true, order: 12 },
 	{ id: 'digest', title: "Today's Digest", icon: '☀️', contentType: 'digest', defaultWidth: 2, visible: true, order: 13 },
-	{ id: 'history', title: 'Today in History', icon: '📅', contentType: 'history', defaultWidth: 2, visible: true, order: 14 }
+	{ id: 'history', title: 'Today in History', icon: '📅', contentType: 'history', defaultWidth: 2, visible: true, order: 14 },
+	{ id: 'video', title: "Today's Good News Video", icon: '🎬', contentType: 'video', defaultWidth: 2, visible: true, order: 15 },
+	{ id: 'quote', title: 'Daily Inspiration', icon: '✦', contentType: 'quote', defaultWidth: 2, visible: true, order: 16 }
 ];
 
 export const CATEGORIES = PANELS.filter((p) => p.contentType === 'stories').map((p) => ({

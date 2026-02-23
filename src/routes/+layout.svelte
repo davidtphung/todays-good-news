@@ -33,9 +33,20 @@
 			<span class="text-xs uppercase tracking-wider text-white/20">
 				Good News Dashboard
 			</span>
-			<span class="text-xs text-white/20">
-				Updated every 4 hours
-			</span>
+			<div class="flex items-center gap-3">
+				<span class="text-xs text-white/20">
+					Updated every 4 hours
+				</span>
+				<span class="text-white/10">·</span>
+				<a
+					href="https://x.com/davidtphung"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-xs text-white/30 transition-all duration-150 hover:text-white/50"
+				>
+					Built by David T Phung
+				</a>
+			</div>
 		</div>
 	</footer>
 

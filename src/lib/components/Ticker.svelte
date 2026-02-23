@@ -49,7 +49,7 @@
 
 <style>
 	.ticker-track {
-		animation: ticker-scroll 90s linear infinite;
+		animation: ticker-scroll 30s linear infinite;
 	}
 	.ticker-track:hover {
 		animation-play-state: paused;

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Story, DailyDigest as DigestType, StoryCategory } from '$lib/types/story.js';
 	import type { HistoryEvent } from '$lib/utils/history.js';
+	import type { DailyQuote as QuoteType } from '$lib/utils/quotes.js';
+	import type { DailyVideo as VideoType } from '$lib/utils/videos.js';
 	import { PANELS } from '$lib/config.js';
 	import { panels } from '$lib/stores/panels.svelte.js';
 	import { stories } from '$lib/stores/stories.svelte.js';
@@ -12,15 +14,19 @@
 	import DailyDigest from './DailyDigest.svelte';
 	import Ticker from './Ticker.svelte';
 	import TodayInHistory from './TodayInHistory.svelte';
+	import DailyVideo from './DailyVideo.svelte';
+	import DailyQuote from './DailyQuote.svelte';
 
 	interface Props {
 		initialStories: Record<string, Story[]>;
 		digest: DigestType | null;
 		geoStories: Story[];
 		history: { events: HistoryEvent[]; dateLabel: string };
+		quote: QuoteType;
+		video: VideoType;
 	}
 
-	let { initialStories, digest, geoStories, history }: Props = $props();
+	let { initialStories, digest, geoStories, history, quote, video }: Props = $props();
 
 	let mounted = $state(false);
 
@@ -44,22 +50,31 @@
 				}))
 	);
 
+	// Top section panels: digest, history, video, quote
+	const topPanelIds = ['digest', 'history', 'video', 'quote'] as const;
+
 	const gridPanels = $derived(
-		visiblePanels.filter((l) => l.id !== 'digest' && l.id !== 'history')
+		visiblePanels.filter((l) => !topPanelIds.includes(l.id as typeof topPanelIds[number]))
 	);
 
 	const showDigest = $derived(visiblePanels.some((l) => l.id === 'digest'));
 	const showHistory = $derived(visiblePanels.some((l) => l.id === 'history'));
+	const showVideo = $derived(visiblePanels.some((l) => l.id === 'video'));
+	const showQuote = $derived(visiblePanels.some((l) => l.id === 'quote'));
+
+	const hasTopSection = $derived(showDigest || showHistory || showVideo || showQuote);
 
 	const digestConfig = PANELS.find((p) => p.id === 'digest')!;
 	const historyConfig = PANELS.find((p) => p.id === 'history')!;
+	const videoConfig = PANELS.find((p) => p.id === 'video')!;
+	const quoteConfig = PANELS.find((p) => p.id === 'quote')!;
 </script>
 
 <!-- ESPN-style ticker at the top -->
 <Ticker stories={allStories} />
 
-<!-- Digest + History section -->
-{#if showDigest || showHistory}
+<!-- Top section: Digest + History + Video + Quote -->
+{#if hasTopSection}
 	<div class="border-b border-white/10 bg-surface-raised/50">
 		<div class="mx-auto grid max-w-[1800px] grid-cols-1 gap-1 p-2 md:grid-cols-2 md:p-4">
 			{#if showDigest}
@@ -81,6 +96,22 @@
 				{#if historyLayout}
 					<Panel config={historyConfig} layout={{ ...historyLayout, width: 2 }} storyCount={0}>
 						<TodayInHistory events={history.events} dateLabel={history.dateLabel} />
+					</Panel>
+				{/if}
+			{/if}
+			{#if showVideo}
+				{@const videoLayout = visiblePanels.find((l) => l.id === 'video')}
+				{#if videoLayout}
+					<Panel config={videoConfig} layout={{ ...videoLayout, width: 2 }} storyCount={0}>
+						<DailyVideo {video} />
+					</Panel>
+				{/if}
+			{/if}
+			{#if showQuote}
+				{@const quoteLayout = visiblePanels.find((l) => l.id === 'quote')}
+				{#if quoteLayout}
+					<Panel config={quoteConfig} layout={{ ...quoteLayout, width: 2 }} storyCount={0}>
+						<DailyQuote {quote} />
 					</Panel>
 				{/if}
 			{/if}
