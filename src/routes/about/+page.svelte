@@ -88,35 +88,7 @@
 		<div class="grid grid-cols-2 gap-2 md:grid-cols-3">
 			{#each CATEGORIES as cat}
 				<div class="rounded-sm border border-white/5 bg-white/[0.02] px-3 py-2">
-					<span class="mr-1 text-sm">{cat.icon}</span>
 					<span class="text-xs text-white/50">{cat.title}</span>
-				</div>
-			{/each}
-		</div>
-	</section>
-
-	<div class="mb-10 h-px w-full bg-white/10"></div>
-
-	<!-- Features -->
-	<section class="mb-10">
-		<h2 class="mb-4 text-xs uppercase tracking-wider text-white/30">Features</h2>
-		<div class="space-y-3">
-			{#each [
-				{ icon: '📡', title: 'Live Ticker', desc: 'ESPN-style scrolling headlines of the top positive stories' },
-				{ icon: '🌐', title: '3D Globe', desc: 'Interactive rotating globe showing story locations worldwide' },
-				{ icon: '☀️', title: 'Daily Digest', desc: 'AI-generated summary of the day\'s best positive developments' },
-				{ icon: '🎬', title: 'Daily Video', desc: 'A new uplifting video each day about humanity and good news' },
-				{ icon: '✦', title: 'Daily Quote', desc: 'Rotating inspirational quotes to start your day right' },
-				{ icon: '📅', title: 'Today in History', desc: 'Positive historical events that happened on this day' },
-				{ icon: '📊', title: 'Trending Topics', desc: 'Word cloud of the most mentioned positive themes' },
-				{ icon: '⚙️', title: 'Customizable Panels', desc: 'Toggle panels on/off to build your perfect dashboard' }
-			] as feature}
-				<div class="flex items-start gap-3 -mx-2 rounded-sm px-2 py-2 transition-all duration-150 hover:bg-white/5">
-					<span class="mt-0.5 text-sm">{feature.icon}</span>
-					<div>
-						<h3 class="text-sm font-normal text-gray-50">{feature.title}</h3>
-						<p class="mt-0.5 text-xs text-white/40">{feature.desc}</p>
-					</div>
 				</div>
 			{/each}
 		</div>

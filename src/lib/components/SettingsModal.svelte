@@ -43,15 +43,14 @@
 					<h3 class="text-xs uppercase tracking-wider text-white/30">Theme</h3>
 					<div class="flex gap-2">
 						{#each [
-							{ value: 'dark', label: 'Dark', icon: '🌙' },
-							{ value: 'light', label: 'Light', icon: '☀️' },
-							{ value: 'system', label: 'System', icon: '💻' }
+							{ value: 'dark', label: 'Dark' },
+							{ value: 'light', label: 'Light' },
+							{ value: 'system', label: 'System' }
 						] as option}
 							<button
 								onclick={() => preferences.setTheme(option.value as 'dark' | 'light' | 'system')}
 								class="flex-1 rounded-sm border px-3 py-2 text-xs transition-all duration-150 {preferences.theme === option.value ? 'border-positive/50 bg-positive/10 text-positive' : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'}"
 							>
-								<span class="mr-1">{option.icon}</span>
 								{option.label}
 							</button>
 						{/each}
@@ -102,10 +101,7 @@
 						<label
 							class="flex items-center justify-between -mx-2 rounded-sm px-2 py-2 transition-all duration-150 hover:bg-white/5"
 						>
-							<div class="flex items-center gap-2">
-								<span class="text-sm">{panelConfig.icon}</span>
-								<span class="text-sm text-white/60">{panelConfig.title}</span>
-							</div>
+							<span class="text-sm text-white/60">{panelConfig.title}</span>
 							<input
 								type="checkbox"
 								checked={layout?.visible ?? true}

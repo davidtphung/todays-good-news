@@ -64,7 +64,10 @@
 >
 	<PanelHeader {config} {storyCount} />
 	<div class="h-px w-full bg-white/10"></div>
-	<div class="flex-1 overflow-y-auto px-4 py-2" style="max-height: 480px;">
+	<div
+		class="flex-1 {config.contentType === 'map' ? 'overflow-hidden' : 'overflow-y-auto px-4 py-2'}"
+		style={config.contentType === 'map' ? '' : 'max-height: 480px;'}
+	>
 		{@render children()}
 	</div>
 </section>

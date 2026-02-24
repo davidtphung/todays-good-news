@@ -13,6 +13,7 @@
 		stories.filter((s) => s.location_lat != null && s.location_lon != null)
 	);
 
+	let containerEl: HTMLDivElement | undefined = $state();
 	let canvasEl: HTMLCanvasElement | undefined = $state();
 	let mounted = $state(false);
 	let rotation = $state(0);
@@ -164,7 +165,6 @@
 		for (const continent of continents) {
 			ctx.beginPath();
 			let started = false;
-			let allVisible = true;
 			const points: { x: number; y: number }[] = [];
 
 			for (const [lat, lon] of continent) {
@@ -178,7 +178,6 @@
 					}
 					points.push({ x: p.x, y: p.y });
 				} else {
-					allVisible = false;
 					started = false;
 				}
 			}
@@ -234,8 +233,13 @@
 		const ctx = canvasEl.getContext('2d');
 		if (!ctx) return;
 
-		const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
 		const rect = canvasEl.getBoundingClientRect();
+		if (rect.width === 0 || rect.height === 0) {
+			// Canvas not laid out yet, try again
+			animationId = requestAnimationFrame(animate);
+			return;
+		}
+
 		drawGlobe(ctx, rect.width, rect.height);
 
 		if (!isDragging) {
@@ -249,8 +253,10 @@
 		if (!canvasEl) return;
 		const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
 		const rect = canvasEl.getBoundingClientRect();
-		canvasEl.width = rect.width * dpr;
-		canvasEl.height = rect.height * dpr;
+		if (rect.width > 0 && rect.height > 0) {
+			canvasEl.width = rect.width * dpr;
+			canvasEl.height = rect.height * dpr;
+		}
 	}
 
 	function handleMouseDown(e: MouseEvent) {
@@ -312,12 +318,15 @@
 
 	onMount(() => {
 		mounted = true;
-		handleResize();
+
+		// Delay initial resize to ensure layout is complete
+		requestAnimationFrame(() => {
+			handleResize();
+			animationId = requestAnimationFrame(animate);
+		});
 
 		const observer = new ResizeObserver(() => handleResize());
-		if (canvasEl) observer.observe(canvasEl);
-
-		animationId = requestAnimationFrame(animate);
+		if (containerEl) observer.observe(containerEl);
 
 		return () => {
 			if (animationId) cancelAnimationFrame(animationId);
@@ -326,7 +335,7 @@
 	});
 </script>
 
-<div class="relative w-full overflow-hidden" style="aspect-ratio: 2/1;">
+<div bind:this={containerEl} class="relative w-full overflow-hidden" style="min-height: 300px; aspect-ratio: 2/1;">
 	{#if mounted}
 		<canvas
 			bind:this={canvasEl}
@@ -350,7 +359,7 @@
 	{:else}
 		<!-- SSR fallback -->
 		<div class="flex h-full w-full items-center justify-center">
-			<span class="text-xs text-white/20">Loading globe…</span>
+			<span class="text-xs text-white/20">Loading globe</span>
 		</div>
 	{/if}
 

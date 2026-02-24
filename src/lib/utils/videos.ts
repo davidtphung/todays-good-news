@@ -8,193 +8,193 @@ export interface DailyVideo {
 /**
  * Curated collection of uplifting, good-news, and humanity-focused videos.
  * Each rotates daily so visitors see fresh content.
- * All YouTube IDs verified working via oEmbed API.
+ * All YouTube IDs verified working via oEmbed API on 2026-02-23.
  */
 const VIDEOS: DailyVideo[] = [
 	{
 		id: 'v-0',
-		title: 'Humanity — A Beautiful Story',
-		description: 'A look at the everyday acts of kindness and connection that define our shared humanity.',
+		title: 'Kindness Boomerang — One Day',
+		description: 'Watch how one act of kindness creates a ripple effect that comes full circle.',
 		youtubeId: 'nwAYpLVyeFU'
 	},
 	{
 		id: 'v-1',
-		title: 'Good News — People Are Awesome',
-		description: 'Compilation of incredible human achievements and heartwarming moments from around the world.',
+		title: 'What a Wonderful World with David Attenborough',
+		description: 'A breathtaking look at the beauty of our planet narrated by Sir David Attenborough.',
 		youtubeId: 'auSo1MyWf8g'
 	},
 	{
 		id: 'v-2',
-		title: 'Restoring Faith in Humanity',
-		description: 'Real moments of people helping strangers, rescuing animals, and spreading kindness.',
+		title: 'Gratitude — Louie Schwartzberg at TEDxSF',
+		description: 'A stunning visual journey exploring the power of gratitude and everyday beauty.',
 		youtubeId: 'gXDMoiEkyuQ'
 	},
 	{
 		id: 'v-3',
-		title: 'The Beauty of Human Connection',
-		description: 'Moving stories of strangers becoming friends and communities coming together.',
-		youtubeId: '3OG82n1MYMw'
+		title: 'Good News Movement Brings Positive Stories to Millions',
+		description: 'How the Good News Movement is changing the media landscape by highlighting the best in humanity.',
+		youtubeId: 'WEp_WiFfwvA'
 	},
 	{
 		id: 'v-4',
-		title: 'Acts of Kindness That Will Make Your Day',
-		description: 'Heartwarming moments caught on camera — proof that good people are everywhere.',
-		youtubeId: '4wPYwVJk08s'
+		title: 'Inspiring Stories That Give Hope',
+		description: 'A collection of real stories from around the world that remind us of the good in people.',
+		youtubeId: 'bqUc65YD_Do'
 	},
 	{
 		id: 'v-5',
-		title: 'Amazing People — Best of the Year',
-		description: 'The most inspiring stories and achievements from people making the world better.',
-		youtubeId: '6Oqxn_rFtK8'
+		title: 'Good News You May Have Missed',
+		description: 'Positive developments and uplifting stories you might not have heard about.',
+		youtubeId: 'VYJHjfz3InA'
 	},
 	{
 		id: 'v-6',
-		title: 'Kindness Boomerang — One Day',
-		description: 'Watch how one act of kindness creates a ripple effect that comes full circle.',
+		title: '5 Positive News Stories Nobody Is Talking About',
+		description: 'Under-the-radar good news that deserves more attention.',
 		youtubeId: '91bcbEjTRtQ'
 	},
 	{
 		id: 'v-7',
-		title: 'The World Is Beautiful',
-		description: 'Breathtaking scenes from across the globe reminding us of the beauty all around us.',
+		title: 'New York Officer Rescues Man from Subway Train',
+		description: 'A heroic rescue caught on camera — proof that everyday heroes are all around us.',
 		youtubeId: 'AU-90yU7ZfU'
 	},
 	{
 		id: 'v-8',
-		title: 'Heroes Among Us',
-		description: 'Ordinary people doing extraordinary things — first responders, volunteers, and everyday heroes.',
+		title: 'Good News You Might Have Missed',
+		description: 'A roundup of positive stories and heartwarming moments from the year.',
 		youtubeId: 'EePU8negPhg'
 	},
 	{
 		id: 'v-9',
-		title: 'Good News Compilation — Faith in Humanity Restored',
-		description: 'A montage of positive news stories and beautiful human moments from the past year.',
+		title: 'Some Good News with John Krasinski',
+		description: 'The show dedicated entirely to good news, created by John Krasinski during challenging times.',
 		youtubeId: 'F5pgG1M_h_U'
 	},
 	{
 		id: 'v-10',
-		title: 'The Power of Community',
-		description: 'How neighborhoods and cities come together to support each other in times of need.',
+		title: 'Good News Movement — Weekly Positive Stories',
+		description: 'The Good News Movement shares positive news of the week to brighten your day.',
 		youtubeId: 'GKbamw7ZY64'
 	},
 	{
 		id: 'v-11',
-		title: 'Children Changing the World',
-		description: 'Young innovators, activists, and dreamers making a real difference in their communities.',
+		title: 'Good News Today — Innovation Lifts Lives',
+		description: 'How innovation and human ingenuity are solving real problems and lifting lives worldwide.',
 		youtubeId: 'IScmLCkG8r8'
 	},
 	{
 		id: 'v-12',
-		title: 'Nature Recovery — Hope for the Planet',
-		description: 'Incredible environmental recoveries showing that when we act, nature bounces back.',
-		youtubeId: 'IVrqf7W5JqI'
+		title: 'These Are the Best Good News of 2024',
+		description: 'A roundup of the most uplifting and positive news stories of the year.',
+		youtubeId: '6gI-wKbKfeI'
 	},
 	{
 		id: 'v-13',
-		title: 'Random Acts of Kindness',
-		description: 'Spontaneous moments of generosity and compassion captured on camera.',
+		title: 'Acts of Kindness from Steve Hartman',
+		description: 'Heartwarming stories of kindness and compassion reported by Steve Hartman.',
 		youtubeId: 'L-e5Rpt8CAs'
 	},
 	{
 		id: 'v-14',
-		title: 'Together We Rise',
-		description: 'Stories of communities overcoming challenges through unity, resilience, and hope.',
-		youtubeId: 'LCsysNv2_kc'
+		title: 'Good News Only — Uplifting Stories',
+		description: 'A dedicated compilation of only good news to restore your outlook on the world.',
+		youtubeId: 'lRCWHTLhYMs'
 	},
 	{
 		id: 'v-15',
-		title: 'Positive News Around the World',
-		description: 'The best good-news stories from every continent — proof the world is getting better.',
+		title: '5 Positive News Stories of the Week',
+		description: 'The best good-news stories from every corner of the world this week.',
 		youtubeId: 'LlZgo7eMKlw'
 	},
 	{
 		id: 'v-16',
-		title: 'Animals and Humans — Best Friends',
-		description: 'Heartwarming animal rescue stories and the incredible bonds between species.',
+		title: 'Good News Stories You Probably Missed',
+		description: 'Uplifting stories from around the world that flew under the radar.',
 		youtubeId: 'N5F1ng0hwvk'
 	},
 	{
 		id: 'v-17',
-		title: 'Science Breakthroughs That Give Us Hope',
-		description: 'The latest scientific discoveries that could change the world for the better.',
-		youtubeId: 'WIyM-6mdYsw'
+		title: 'Why Beautiful Things Make Us Happy',
+		description: 'Exploring the science behind beauty and how it contributes to human happiness.',
+		youtubeId: '-O5kNPlUV7w'
 	},
 	{
 		id: 'v-18',
-		title: 'Volunteers Making a Difference',
-		description: 'Meet the unsung heroes dedicating their time to build a better world.',
+		title: 'The Best of Humanity Caught on Camera',
+		description: 'Real moments of people helping strangers, rescuing animals, and spreading kindness.',
 		youtubeId: 'abOz-EoX7OY'
 	},
 	{
 		id: 'v-19',
-		title: 'Small Acts, Big Impact',
-		description: 'How tiny gestures of kindness can change someone\'s entire day — or life.',
+		title: 'Good News — Positive Environmental Stories',
+		description: 'Environmental success stories proving that when we act, nature bounces back.',
 		youtubeId: 'bIz_OWP_Uio'
 	},
 	{
 		id: 'v-20',
-		title: 'The Good in the World — Year in Review',
-		description: 'A celebration of the best moments, achievements, and stories of human goodness.',
+		title: 'Inspiring Stories That Will Make You Happy',
+		description: 'A collection of stories that celebrate the best of the human spirit.',
 		youtubeId: 'dyaBnkwz-0s'
 	},
 	{
 		id: 'v-21',
-		title: 'Innovators Solving Global Problems',
-		description: 'Brilliant minds tackling climate change, poverty, and health — and winning.',
-		youtubeId: 'eBu7lu-Jkvs'
+		title: 'A Valuable Lesson for a Happier Life',
+		description: 'A short film exploring the simple principles that lead to a more fulfilling life.',
+		youtubeId: 'SqGRnlXplx0'
 	},
 	{
 		id: 'v-22',
-		title: 'Unexpected Kindness',
-		description: 'The most surprising and touching acts of generosity from complete strangers.',
-		youtubeId: 'hsbqy7A_9Ts'
+		title: 'Good News in 2024 You Might Have Missed',
+		description: 'The most surprising and touching good news stories of the year.',
+		youtubeId: 'By3Z8AU-nuc'
 	},
 	{
 		id: 'v-23',
-		title: 'Music Brings People Together',
-		description: 'How music crosses borders and brings joy to communities everywhere.',
-		youtubeId: 'mwEFjDBuPwU'
+		title: 'Your Weekly Dose of Good News',
+		description: 'A weekly roundup of feel-good stories to brighten your day.',
+		youtubeId: 'FbSTaa-hkmA'
 	},
 	{
 		id: 'v-24',
-		title: 'Teachers Who Changed Lives',
-		description: 'Inspiring educators going above and beyond to help their students succeed.',
-		youtubeId: 'nZfPXTbCwGc'
+		title: 'Five Good News Stories to Make You Feel Better',
+		description: 'Stories that remind us the world is making progress in surprising ways.',
+		youtubeId: 'eb4O1lRZ2iE'
 	},
 	{
 		id: 'v-25',
-		title: 'Comeback Stories — Never Give Up',
-		description: 'People who overcame incredible odds to achieve their dreams.',
-		youtubeId: 'o8VV1d39NOY'
+		title: 'Random Acts of Kindness — Best of the Year',
+		description: 'The most touching random acts of kindness caught on camera this year.',
+		youtubeId: 'GAM1onLXt1E'
 	},
 	{
 		id: 'v-26',
-		title: 'Cities Going Green',
-		description: 'Urban areas around the world transforming into sustainable, livable spaces.',
-		youtubeId: 'oEud46DlXhk'
+		title: 'Good News Friday',
+		description: 'A feel-good roundup of the week\'s most uplifting stories.',
+		youtubeId: 'YytUGDzFNhU'
 	},
 	{
 		id: 'v-27',
-		title: 'Seniors Inspiring the Next Generation',
-		description: 'Older adults sharing wisdom, energy, and love with young people.',
+		title: 'Random Acts of Kindness — Faith in Humanity',
+		description: 'People going above and beyond to help others — proof that kindness is everywhere.',
 		youtubeId: 'qphxYDY5_Uw'
 	},
 	{
 		id: 'v-28',
-		title: 'Sports Moments That Moved the World',
-		description: 'Sportsmanship, fairness, and emotional moments from athletic competition.',
+		title: 'Uplifting Compilation — Random Acts of Kindness',
+		description: 'A heartwarming compilation of sportsmanship, fairness, and kindness from around the world.',
 		youtubeId: 'rx9S75dJpcI'
 	},
 	{
 		id: 'v-29',
-		title: 'A Better World Is Possible',
-		description: 'Evidence that humanity is moving in the right direction — with data and stories.',
+		title: 'Random Acts of Kindness — Faith in Humanity Restored',
+		description: 'Beautiful moments that show the very best of what humanity has to offer.',
 		youtubeId: 'sWrrMoKcIWs'
 	},
 	{
 		id: 'v-30',
-		title: 'Celebrating Diversity',
-		description: 'How our differences make us stronger and our shared humanity connects us.',
+		title: 'Teen Receives Scholarship After Act of Kindness Goes Viral',
+		description: 'How one teenager\'s generosity changed their life and inspired thousands.',
 		youtubeId: 'uFPyGGwsWdI'
 	}
 ];
