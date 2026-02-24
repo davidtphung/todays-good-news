@@ -9,8 +9,10 @@ import { summarizeStory } from './ai/summarizer.js';
 import { upsertStories, getRecentTitles } from './db.js';
 import { isDuplicate } from '$lib/utils/dedup.js';
 import { MIN_POSITIVITY_SCORE } from '$lib/config.js';
+import { auditNewStories } from './link-auditor.js';
 import type { RawArticle } from '$lib/types/source.js';
 import type { StoryCategory } from '$lib/types/story.js';
+import type { LinkAuditResult } from './link-auditor.js';
 
 export interface PipelineResult {
 	fetched: number;
@@ -20,6 +22,11 @@ export interface PipelineResult {
 	sources: Record<string, number>;
 	duration_ms: number;
 	timestamp: string;
+	linkAudit?: {
+		checked: number;
+		ok: number;
+		issues: LinkAuditResult[];
+	};
 }
 
 /**
@@ -146,6 +153,32 @@ export async function runIngestionPipeline(): Promise<PipelineResult> {
 		}
 	}
 
+	// 5. Audit links on newly stored stories
+	let linkAudit: PipelineResult['linkAudit'] = undefined;
+	if (storiesToStore.length > 0) {
+		try {
+			const auditResults = await auditNewStories(
+				storiesToStore.map((s, i) => ({
+					id: `new-${i}`,
+					title: s.title,
+					category: s.category,
+					source_url: s.source_url
+				}))
+			);
+			const issues = auditResults.filter((r) => r.status !== 'ok');
+			linkAudit = {
+				checked: auditResults.length,
+				ok: auditResults.filter((r) => r.status === 'ok').length,
+				issues
+			};
+			if (issues.length > 0) {
+				console.warn(`[Agent] Link audit found ${issues.length} issues in new stories`);
+			}
+		} catch (auditErr) {
+			errors.push(`Link audit: ${auditErr}`);
+		}
+	}
+
 	const duration = Date.now() - startTime;
 	console.log(`[Agent] Pipeline completed in ${duration}ms`);
 
@@ -156,7 +189,8 @@ export async function runIngestionPipeline(): Promise<PipelineResult> {
 		errors,
 		sources: sourceCounts,
 		duration_ms: duration,
-		timestamp: new Date().toISOString()
+		timestamp: new Date().toISOString(),
+		linkAudit
 	};
 }
 

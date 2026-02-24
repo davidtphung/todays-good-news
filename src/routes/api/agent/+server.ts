@@ -2,6 +2,7 @@ import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types.js';
 import { env } from '$env/dynamic/private';
 import { runIngestionPipeline, checkSourceHealth } from '$lib/server/scheduler.js';
+import { getLatestAuditReport } from '$lib/server/link-auditor.js';
 import type { PipelineResult } from '$lib/server/scheduler.js';
 
 /** In-memory state for the agent dashboard */
@@ -20,15 +21,38 @@ export const GET: RequestHandler = async ({ url }) => {
 		});
 	}
 
+	// Get latest audit report for dashboard
+	const latestAudit = await getLatestAuditReport();
+	const auditSummary = latestAudit
+		? {
+				lastRun: latestAudit.completedAt,
+				totalChecked: latestAudit.totalChecked,
+				ok: latestAudit.ok,
+				broken: latestAudit.broken,
+				placeholders: latestAudit.placeholders,
+				triggeredBy: latestAudit.triggeredBy
+			}
+		: null;
+
 	// Default: return agent status
 	return json({
 		agent: 'Good News Monitoring Agent',
-		version: '1.0.0',
+		version: '2.0.0',
 		status: isRunning ? 'running' : 'idle',
 		last_run: lastRun,
 		sources: ['RSS (17 feeds)', 'Google News', 'GDELT', 'NewsAPI', 'Reddit (5 subreddits)'],
 		ai_pipeline: ['Classifier (Claude)', 'Scorer (Claude)', 'Summarizer (Claude)'],
-		schedule: 'Every 4 hours (0 */4 * * *)',
+		link_auditor: {
+			description: 'Background agent that validates all story source URLs',
+			schedule: 'Runs after every ingestion + on-demand via /api/audit',
+			checks: ['Dead links (4xx/5xx)', 'Hub/category pages', 'Placeholder URLs', 'SSL errors', 'Timeouts'],
+			latest_report: auditSummary,
+			endpoints: {
+				status: '/api/audit',
+				trigger: '/api/audit?action=run'
+			}
+		},
+		schedule: 'Daily at 6AM UTC (0 6 * * *)',
 		config: {
 			min_positivity_score: 40,
 			dedup_window_hours: 48,
