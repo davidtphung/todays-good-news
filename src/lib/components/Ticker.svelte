@@ -31,9 +31,7 @@
 			<div class="ticker-track flex items-center gap-6 whitespace-nowrap py-2 pl-4">
 				{#each doubled as story, i (story.id + '-' + i)}
 					<a
-						href={story.source_url}
-						target="_blank"
-						rel="noopener noreferrer"
+						href={`/story/${story.id}`}
 						class="inline-flex flex-shrink-0 items-center gap-2 transition-opacity duration-150 hover:opacity-70"
 					>
 						<span class="text-[10px] tabular-nums text-positive/60">{story.positivity_score}</span>
