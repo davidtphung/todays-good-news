@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Story } from '$lib/types/story.js';
 	import { preferences } from '$lib/stores/preferences.svelte.js';
+	import { timeAgo } from '$lib/utils/time.js';
 	import { onMount } from 'svelte';
 
 	interface Props {
@@ -18,12 +19,17 @@
 	let mounted = $state(false);
 	let rotation = $state(0);
 	let hoveredStory: Story | null = $state(null);
+	let selectedStory: Story | null = $state(null);
 	let isDragging = $state(false);
 	let lastMouseX = $state(0);
+	let dragStartX = $state(0);
+	let dragStartY = $state(0);
+	let didDrag = $state(false);
 	let animationId: number | undefined;
 
 	const GLOBE_RADIUS = 0.38;
 	const DOT_RADIUS = 0.012;
+	const DRAG_THRESHOLD = 4; // px — below this is a click, above is a drag
 
 	function toRadians(deg: number): number {
 		return (deg * Math.PI) / 180;
@@ -67,6 +73,14 @@
 		[[-15, 130], [-12, 135], [-15, 140], [-25, 150], [-35, 148], [-38, 145], [-35, 137], [-30, 132], [-25, 115], [-20, 115], [-15, 125], [-15, 130]]
 	];
 
+	// Category labels
+	const categoryLabels: Record<string, string> = {
+		science: 'Science', health: 'Health', environment: 'Environment',
+		technology: 'Tech', community: 'Community', education: 'Education',
+		arts: 'Arts', animals: 'Animals', economy: 'Economy',
+		space: 'Space', sports: 'Sports'
+	};
+
 	// Theme-aware colors
 	const isLight = $derived(preferences.theme === 'light');
 	const globeColors = $derived(isLight ? {
@@ -86,6 +100,29 @@
 		continentStroke: 'rgba(255, 255, 255, 0.12)',
 		continentFill: 'rgba(255, 255, 255, 0.04)',
 	});
+
+	/** Hit-test: find the closest visible story to a canvas-space point */
+	function hitTest(mx: number, my: number): Story | null {
+		if (!canvasEl) return null;
+		const rect = canvasEl.getBoundingClientRect();
+		const cx = rect.width / 2;
+		const cy = rect.height / 2;
+		const radius = Math.min(rect.width, rect.height) * GLOBE_RADIUS;
+
+		let closest: Story | null = null;
+		let closestDist = Infinity;
+
+		for (const story of geoStories) {
+			const p = project3D(story.location_lat!, story.location_lon!, cx, cy, radius);
+			if (!p.visible) continue;
+			const dist = Math.sqrt((mx - p.x) ** 2 + (my - p.y) ** 2);
+			if (dist < 18 && dist < closestDist) {
+				closest = story;
+				closestDist = dist;
+			}
+		}
+		return closest;
+	}
 
 	function drawGlobe(ctx: CanvasRenderingContext2D, width: number, height: number) {
 		const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
@@ -196,6 +233,7 @@
 			const dotR = Math.min(width, height) * DOT_RADIUS;
 			const alpha = 0.3 + 0.7 * ((p.z + 0.1) / 1.1);
 			const isHovered = hoveredStory?.id === story.id;
+			const isSelected = selectedStory?.id === story.id;
 
 			// Pulse ring
 			const pulsePhase = (Date.now() / 1500 + geoStories.indexOf(story) * 0.5) % 1;
@@ -207,10 +245,10 @@
 			ctx.lineWidth = 0.5;
 			ctx.stroke();
 
-			// Glow
-			if (isHovered) {
+			// Glow for hover or selected
+			if (isHovered || isSelected) {
 				const glowGradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, dotR * 4);
-				glowGradient.addColorStop(0, `rgba(16, 185, 129, ${0.3 * alpha})`);
+				glowGradient.addColorStop(0, `rgba(16, 185, 129, ${(isSelected ? 0.5 : 0.3) * alpha})`);
 				glowGradient.addColorStop(1, 'rgba(16, 185, 129, 0)');
 				ctx.beginPath();
 				ctx.arc(p.x, p.y, dotR * 4, 0, Math.PI * 2);
@@ -218,11 +256,21 @@
 				ctx.fill();
 			}
 
-			// Core dot
+			// Core dot — bigger when selected
+			const scale = isSelected ? 2 : isHovered ? 1.5 : 1;
 			ctx.beginPath();
-			ctx.arc(p.x, p.y, isHovered ? dotR * 1.5 : dotR, 0, Math.PI * 2);
-			ctx.fillStyle = `rgba(16, 185, 129, ${alpha * (isHovered ? 1 : 0.8)})`;
+			ctx.arc(p.x, p.y, dotR * scale, 0, Math.PI * 2);
+			ctx.fillStyle = `rgba(16, 185, 129, ${alpha * ((isHovered || isSelected) ? 1 : 0.8)})`;
 			ctx.fill();
+
+			// Selection ring
+			if (isSelected) {
+				ctx.beginPath();
+				ctx.arc(p.x, p.y, dotR * 3, 0, Math.PI * 2);
+				ctx.strokeStyle = `rgba(16, 185, 129, ${0.6 * alpha})`;
+				ctx.lineWidth = 1;
+				ctx.stroke();
+			}
 		}
 
 		ctx.restore();
@@ -235,7 +283,6 @@
 
 		const rect = canvasEl.getBoundingClientRect();
 		if (rect.width === 0 || rect.height === 0) {
-			// Canvas not laid out yet, try again
 			animationId = requestAnimationFrame(animate);
 			return;
 		}
@@ -261,7 +308,10 @@
 
 	function handleMouseDown(e: MouseEvent) {
 		isDragging = true;
+		didDrag = false;
 		lastMouseX = e.clientX;
+		dragStartX = e.clientX;
+		dragStartY = e.clientY;
 	}
 
 	function handleMouseMove(e: MouseEvent) {
@@ -269,6 +319,13 @@
 			const dx = e.clientX - lastMouseX;
 			rotation += dx * 0.3;
 			lastMouseX = e.clientX;
+
+			// Track total drag distance to distinguish click vs. drag
+			const totalDx = Math.abs(e.clientX - dragStartX);
+			const totalDy = Math.abs(e.clientY - dragStartY);
+			if (totalDx > DRAG_THRESHOLD || totalDy > DRAG_THRESHOLD) {
+				didDrag = true;
+			}
 		}
 
 		// Hit test for hover
@@ -276,32 +333,37 @@
 		const rect = canvasEl.getBoundingClientRect();
 		const mx = e.clientX - rect.left;
 		const my = e.clientY - rect.top;
-		const cx = rect.width / 2;
-		const cy = rect.height / 2;
-		const radius = Math.min(rect.width, rect.height) * GLOBE_RADIUS;
-
-		let closest: Story | null = null;
-		let closestDist = Infinity;
-
-		for (const story of geoStories) {
-			const p = project3D(story.location_lat!, story.location_lon!, cx, cy, radius);
-			if (!p.visible) continue;
-			const dist = Math.sqrt((mx - p.x) ** 2 + (my - p.y) ** 2);
-			if (dist < 15 && dist < closestDist) {
-				closest = story;
-				closestDist = dist;
-			}
-		}
-		hoveredStory = closest;
+		hoveredStory = hitTest(mx, my);
 	}
 
-	function handleMouseUp() {
+	function handleMouseUp(e: MouseEvent) {
 		isDragging = false;
+
+		// If user didn't drag (it's a click), check if they clicked a story dot
+		if (!didDrag && canvasEl) {
+			const rect = canvasEl.getBoundingClientRect();
+			const mx = e.clientX - rect.left;
+			const my = e.clientY - rect.top;
+			const clicked = hitTest(mx, my);
+			if (clicked) {
+				selectedStory = clicked;
+			} else {
+				selectedStory = null;
+			}
+		}
+	}
+
+	function handleMouseLeave() {
+		isDragging = false;
+		hoveredStory = null;
 	}
 
 	function handleTouchStart(e: TouchEvent) {
 		isDragging = true;
+		didDrag = false;
 		lastMouseX = e.touches[0].clientX;
+		dragStartX = e.touches[0].clientX;
+		dragStartY = e.touches[0].clientY;
 	}
 
 	function handleTouchMove(e: TouchEvent) {
@@ -309,11 +371,35 @@
 			const dx = e.touches[0].clientX - lastMouseX;
 			rotation += dx * 0.3;
 			lastMouseX = e.touches[0].clientX;
+
+			const totalDx = Math.abs(e.touches[0].clientX - dragStartX);
+			const totalDy = Math.abs(e.touches[0].clientY - dragStartY);
+			if (totalDx > DRAG_THRESHOLD || totalDy > DRAG_THRESHOLD) {
+				didDrag = true;
+			}
 		}
 	}
 
-	function handleTouchEnd() {
+	function handleTouchEnd(e: TouchEvent) {
 		isDragging = false;
+
+		// If tap (not drag), find tapped story
+		if (!didDrag && canvasEl && e.changedTouches.length > 0) {
+			const touch = e.changedTouches[0];
+			const rect = canvasEl.getBoundingClientRect();
+			const mx = touch.clientX - rect.left;
+			const my = touch.clientY - rect.top;
+			const tapped = hitTest(mx, my);
+			if (tapped) {
+				selectedStory = tapped;
+			} else {
+				selectedStory = null;
+			}
+		}
+	}
+
+	function dismissCard() {
+		selectedStory = null;
 	}
 
 	onMount(() => {
@@ -339,21 +425,91 @@
 	{#if mounted}
 		<canvas
 			bind:this={canvasEl}
-			class="h-full w-full cursor-grab active:cursor-grabbing"
+			class="h-full w-full {hoveredStory ? 'cursor-pointer' : 'cursor-grab'} active:cursor-grabbing"
 			onmousedown={handleMouseDown}
 			onmousemove={handleMouseMove}
 			onmouseup={handleMouseUp}
-			onmouseleave={handleMouseUp}
+			onmouseleave={handleMouseLeave}
 			ontouchstart={handleTouchStart}
 			ontouchmove={handleTouchMove}
 			ontouchend={handleTouchEnd}
 		></canvas>
 
-		<!-- Tooltip -->
-		{#if hoveredStory}
+		<!-- Hover tooltip (shown when hovering but no card selected) -->
+		{#if hoveredStory && !selectedStory}
 			<div class="pointer-events-none absolute bottom-3 left-3 right-3 rounded-sm bg-surface-overlay/90 px-3 py-2 backdrop-blur-sm">
 				<p class="text-xs font-normal text-gray-50 line-clamp-1">{hoveredStory.title}</p>
 				<p class="text-[10px] text-white/40">{hoveredStory.location_name}</p>
+			</div>
+		{/if}
+
+		<!-- Selected story card -->
+		{#if selectedStory}
+			<div class="absolute inset-x-3 bottom-3 z-10 rounded-sm border border-white/10 bg-surface-raised/95 backdrop-blur-sm shadow-lg">
+				<!-- Close button -->
+				<button
+					onclick={dismissCard}
+					class="absolute top-2 right-2 z-20 flex h-6 w-6 items-center justify-center rounded-full text-xs text-white/40 transition-all duration-150 hover:bg-white/10 hover:text-white/70"
+					aria-label="Close"
+				>
+					x
+				</button>
+
+				<div class="p-4">
+					<!-- Title linked to source -->
+					<a
+						href={selectedStory.source_url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="block text-sm font-normal leading-snug text-gray-50 transition-opacity duration-150 hover:opacity-80 pr-6"
+					>
+						{selectedStory.title}
+					</a>
+
+					<!-- Summary -->
+					<p class="mt-2 text-xs leading-relaxed text-white/50 line-clamp-3">
+						{selectedStory.summary}
+					</p>
+
+					<!-- Meta row -->
+					<div class="mt-3 flex flex-wrap items-center gap-2">
+						<a
+							href={selectedStory.source_url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-xs text-white/30 underline decoration-white/10 underline-offset-2 transition-all duration-150 hover:text-white/50 hover:decoration-white/30"
+						>
+							{selectedStory.source_name}
+						</a>
+						<span class="text-xs text-white/20">·</span>
+						<span class="text-xs text-white/30">{timeAgo(selectedStory.published_at)}</span>
+						{#if selectedStory.location_name}
+							<span class="text-xs text-white/20">·</span>
+							<span class="text-xs text-white/30">{selectedStory.location_name}</span>
+						{/if}
+						<span class="ml-auto inline-flex items-center rounded-full bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-white/40">
+							{categoryLabels[selectedStory.category] ?? selectedStory.category}
+						</span>
+					</div>
+
+					<!-- Action: Read full story -->
+					<div class="mt-3 flex items-center gap-3 border-t border-white/5 pt-3">
+						<a
+							href="/story/{selectedStory.id}"
+							class="text-xs font-medium text-positive transition-opacity duration-150 hover:opacity-80"
+						>
+							View story details
+						</a>
+						<a
+							href={selectedStory.source_url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-xs text-white/30 transition-all duration-150 hover:text-white/50"
+						>
+							Read source
+						</a>
+					</div>
+				</div>
 			</div>
 		{/if}
 	{:else}
