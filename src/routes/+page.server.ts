@@ -5,7 +5,48 @@ import { getTodayInHistory } from '$lib/utils/history.js';
 import { getDailyQuote } from '$lib/utils/quotes.js';
 import { getDailyVideo } from '$lib/utils/videos.js';
 
-// Mock data for development — replaced by Supabase in production
+/**
+ * Attempts to load live stories from Supabase.
+ * Returns null if database is not configured or empty.
+ */
+async function loadLiveStories(): Promise<Record<string, Story[]> | null> {
+	try {
+		const { getStoriesByCategories } = await import('$lib/server/db.js');
+		const grouped = await getStoriesByCategories();
+		const totalStories = Object.values(grouped).flat().length;
+		if (totalStories === 0) return null;
+		return grouped;
+	} catch {
+		return null;
+	}
+}
+
+/**
+ * Attempts to load live digest from Supabase.
+ */
+async function loadLiveDigest(): Promise<DailyDigest | null> {
+	try {
+		const { getTodayDigest } = await import('$lib/server/db.js');
+		return await getTodayDigest();
+	} catch {
+		return null;
+	}
+}
+
+/**
+ * Attempts to load stories with geo coordinates for the 3D globe.
+ */
+async function loadLiveGeoStories(): Promise<Story[] | null> {
+	try {
+		const { getStoriesWithLocation } = await import('$lib/server/db.js');
+		const stories = await getStoriesWithLocation();
+		return stories.length > 0 ? stories : null;
+	} catch {
+		return null;
+	}
+}
+
+// Mock data for development — replaced by live data when Supabase is configured
 function generateMockStories(): Record<string, Story[]> {
 	const grouped: Record<string, Story[]> = {};
 
@@ -309,10 +350,19 @@ function generateMockDigest(): DailyDigest {
 }
 
 export const load: PageServerLoad = async () => {
-	const stories = generateMockStories();
-	const digest = generateMockDigest();
+	// Try live data first, fall back to mock
+	const liveStories = await loadLiveStories();
+	const stories = liveStories ?? generateMockStories();
+
+	const liveDigest = await loadLiveDigest();
+	const digest = liveDigest ?? generateMockDigest();
+
 	const allStories = Object.values(stories).flat();
-	const geoStories = allStories.filter((s) => s.location_lat != null && s.location_lon != null);
+
+	// Try live geo stories, fall back to filtering all stories
+	const liveGeo = await loadLiveGeoStories();
+	const geoStories = liveGeo ?? allStories.filter((s) => s.location_lat != null && s.location_lon != null);
+
 	const history = getTodayInHistory();
 	const quote = getDailyQuote();
 	const video = getDailyVideo();
@@ -323,6 +373,7 @@ export const load: PageServerLoad = async () => {
 		geoStories,
 		history,
 		quote,
-		video
+		video,
+		isLive: liveStories !== null
 	};
 };

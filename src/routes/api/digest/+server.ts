@@ -10,20 +10,45 @@ export const GET: RequestHandler = async () => {
 		return json({ digest: cached, cached: true });
 	}
 
-	// In production:
-	// import { getTodayDigest } from '$lib/server/db.js';
-	// const digest = await getTodayDigest();
-
-	return json({ digest: null, cached: false });
+	try {
+		const { getTodayDigest } = await import('$lib/server/db.js');
+		const digest = await getTodayDigest();
+		if (digest) {
+			await setCache(cacheKey, digest, 3600);
+		}
+		return json({ digest, cached: false });
+	} catch {
+		return json({ digest: null, cached: false, note: 'Database not configured' });
+	}
 };
 
 export const POST: RequestHandler = async () => {
-	// In production: generate a new daily digest using AI
-	// import { getStories, upsertDigest } from '$lib/server/db.js';
-	// ... AI summarization of top stories
+	try {
+		const { getFeaturedStories, upsertDigest } = await import('$lib/server/db.js');
+		const stories = await getFeaturedStories(10);
 
-	return json({
-		success: true,
-		message: 'Digest generation not connected in dev mode'
-	});
+		if (stories.length === 0) {
+			return json({ success: false, message: 'No stories to summarize' });
+		}
+
+		const categoryCounts: Record<string, number> = {};
+		for (const s of stories) {
+			categoryCounts[s.category] = (categoryCounts[s.category] ?? 0) + 1;
+		}
+		const avgPositivity = Math.round(stories.reduce((sum, s) => sum + s.positivity_score, 0) / stories.length);
+
+		const today = new Date().toISOString().split('T')[0];
+		const digest = {
+			date: today,
+			summary: `Today's highlights: ${stories.slice(0, 3).map((s) => s.title).join('. ')}`,
+			top_story_ids: stories.map((s) => s.id),
+			category_counts: categoryCounts,
+			avg_positivity: avgPositivity
+		};
+
+		await upsertDigest(digest);
+		return json({ success: true, digest });
+	} catch (err) {
+		return json({ success: false, message: String(err) });
+	}
 };

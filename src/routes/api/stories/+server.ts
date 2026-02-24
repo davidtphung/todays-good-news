@@ -1,6 +1,10 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types.js';
 import { getCached, setCache, isRateLimited } from '$lib/server/cache.js';
+import { getStories } from '$lib/server/db.js';
+import { invalidateCache } from '$lib/server/cache.js';
+import { runIngestionPipeline } from '$lib/server/scheduler.js';
+import { env } from '$env/dynamic/private';
 import type { Story, StoryCategory } from '$lib/types/story.js';
 
 export const GET: RequestHandler = async ({ url, getClientAddress }) => {
@@ -21,24 +25,38 @@ export const GET: RequestHandler = async ({ url, getClientAddress }) => {
 		return json({ stories: cached, cached: true });
 	}
 
-	// In production, replace with:
-	// import { getStories } from '$lib/server/db.js';
-	// const stories = await getStories({ category, limit, offset });
-
-	return json({ stories: [], cached: false });
+	try {
+		const stories = await getStories({ category: category ?? undefined, limit, offset });
+		if (stories.length > 0) {
+			await setCache(cacheKey, stories, 900); // 15 min cache
+		}
+		return json({ stories, cached: false });
+	} catch {
+		// Fallback: return empty if DB not configured
+		return json({ stories: [], cached: false, note: 'Database not configured' });
+	}
 };
 
 export const POST: RequestHandler = async ({ request }) => {
-	const { action } = await request.json();
+	const authHeader = request.headers.get('authorization');
+	const cronSecret = env.CRON_SECRET;
+
+	if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+		return error(401, 'Unauthorized');
+	}
+
+	const body = await request.json().catch(() => ({}));
+	const action = (body as Record<string, string>).action;
 
 	if (action === 'refresh') {
-		// In production:
-		// import { runIngestionPipeline } from '$lib/server/scheduler.js';
-		// const result = await runIngestionPipeline();
-		// await invalidateCache('stories:*');
-		// return json(result);
-
-		return json({ fetched: 0, classified: 0, stored: 0, message: 'Pipeline not connected in dev mode' });
+		try {
+			const result = await runIngestionPipeline();
+			await invalidateCache('stories:*');
+			return json(result);
+		} catch (err) {
+			console.error('[API] Refresh failed:', err);
+			return error(500, 'Refresh failed');
+		}
 	}
 
 	return error(400, 'Invalid action');

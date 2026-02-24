@@ -1,6 +1,7 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types.js';
 import { env } from '$env/dynamic/private';
+import { runIngestionPipeline } from '$lib/server/scheduler.js';
 
 export const GET: RequestHandler = async ({ request }) => {
 	// Verify cron secret (Vercel sends this header)
@@ -12,18 +13,16 @@ export const GET: RequestHandler = async ({ request }) => {
 	}
 
 	try {
-		// In production:
-		// import { runIngestionPipeline } from '$lib/server/scheduler.js';
-		// const result = await runIngestionPipeline();
-		// return json({ success: true, ...result });
+		console.log('[Cron] Starting good news monitoring pipeline...');
+		const result = await runIngestionPipeline();
+		console.log(`[Cron] Pipeline complete: fetched=${result.fetched}, classified=${result.classified}, stored=${result.stored}`);
 
 		return json({
 			success: true,
-			message: 'Cron endpoint ready. Connect data sources to enable.',
-			timestamp: new Date().toISOString()
+			...result
 		});
 	} catch (err) {
-		console.error('Cron pipeline failed:', err);
+		console.error('[Cron] Pipeline failed:', err);
 		return error(500, 'Pipeline execution failed');
 	}
 };
