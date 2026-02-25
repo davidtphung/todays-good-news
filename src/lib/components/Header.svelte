@@ -59,6 +59,13 @@
 			</button>
 
 			<a
+				href="/archive"
+				class="text-xs text-white/40 transition-all duration-150 hover:text-white/70"
+			>
+				Archive
+			</a>
+
+			<a
 				href="/about"
 				class="text-xs text-white/40 transition-all duration-150 hover:text-white/70"
 			>
